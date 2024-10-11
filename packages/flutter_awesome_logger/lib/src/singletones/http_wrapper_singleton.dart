@@ -1,34 +1,38 @@
 import 'dart:io';
 
 import 'package:flutter_awesome_logger/src/singletones/flutter_log_singleton.dart';
+import 'package:flutter_awesome_logger/src/singletones/proxy_stream_singleton.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HttpClientProxyWrapper {
+class HttpWrapperSingleton {
   HttpClient? _httpClient;
-  final Stream<String> proxyUpdateStream;
-  final FlutterLogSingleton loggerSingleton;
+  late FlutterLogSingleton _loggerSingleton;
   late SharedPreferences _sharedPreferences;
   HttpClient? _initialClient;
 
-  HttpClientProxyWrapper(
-    this.proxyUpdateStream,
-    this.loggerSingleton,
-  ) {
-    proxyUpdateStream.listen(
-      (event) {
-        _recreateClient();
-      },
-    );
+  factory HttpWrapperSingleton() {
+    return _instance;
   }
+
+  static final HttpWrapperSingleton _instance =
+      HttpWrapperSingleton._internal();
+
+  HttpWrapperSingleton._internal();
 
   init(HttpClient httpClient) async {
     _sharedPreferences = await SharedPreferences.getInstance();
     final proxy = _sharedPreferences.getString(proxyName);
+    _loggerSingleton = FlutterLogSingleton();
 
+    ProxyStreamSingleton().proxyStream.stream.listen(
+      (event) {
+        _recreateClient();
+      },
+    );
     _initialClient = httpClient;
     _httpClient = _initialClient;
     if ((proxy?.isNotEmpty ?? false) &&
-        loggerSingleton.loggerSettings.enabled) {
+        _loggerSingleton.loggerSettings.enabled) {
       _httpClient?.findProxy = (_) => "PROXY $proxy;";
       _httpClient?.badCertificateCallback = (_, __, ___) => true;
     }
@@ -39,7 +43,7 @@ class HttpClientProxyWrapper {
 
     _httpClient = _initialClient;
     if ((proxy?.isNotEmpty ?? false) &&
-        loggerSingleton.loggerSettings.enabled) {
+        _loggerSingleton.loggerSettings.enabled) {
       _httpClient?.findProxy = (_) => "PROXY $proxy;";
       _httpClient?.badCertificateCallback = (_, __, ___) => true;
     }

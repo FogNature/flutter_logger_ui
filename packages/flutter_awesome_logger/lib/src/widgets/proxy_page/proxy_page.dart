@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_awesome_logger/flutter_awesome_logger.dart';
 import 'package:flutter_awesome_logger/src/singletones/global_dependencies.dart';
+import 'package:flutter_awesome_logger/src/singletones/proxy_stream_singleton.dart';
 import 'package:flutter_awesome_logger/src/widgets/logger_localizations_widget.dart';
 import 'package:flutter_awesome_logger/src/logic/proxy_page_change_notifier.dart';
 
@@ -30,7 +31,7 @@ class _ProxyPageState extends State<ProxyPage> {
     _ipFocusNode = FocusNode();
     _portFocusNode = FocusNode();
     changeNotifier = ProxyPageChangeNotifier(
-      GlobalDependencies().proxyChangedStream,
+      ProxyStreamSingleton().proxyStream,
       GlobalDependencies().preferencesService,
     );
     super.initState();

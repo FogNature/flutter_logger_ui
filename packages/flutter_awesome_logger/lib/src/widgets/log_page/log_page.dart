@@ -20,7 +20,7 @@ class _LogPageState extends State<LogPage> {
   void initState() {
     _controller = TextEditingController();
     changeNotifier = LogPageChangeNotifier(
-      FlutterLogSingleton.instance,
+      FlutterLogSingleton(),
     )..logInitialized();
     super.initState();
   }

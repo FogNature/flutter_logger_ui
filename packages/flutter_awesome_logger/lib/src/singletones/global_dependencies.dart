@@ -6,15 +6,12 @@ import 'package:flutter_awesome_logger/src/singletones/device_info_singleton.dar
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GlobalDependencies {
-  late StreamController<String?> proxyChangedStream;
   late SharedPreferencesService preferencesService;
   late DeviceInfoSingleton deviceInfoSingleton;
 
   Future<void> init({
     required LoggerSettings settings,
   }) async {
-    proxyChangedStream = StreamController<String?>.broadcast();
-
     final sharedPreferences = await SharedPreferences.getInstance();
     preferencesService = SharedPreferencesService(sharedPreferences);
 
@@ -22,6 +19,6 @@ class GlobalDependencies {
 
     await deviceInfoSingleton.init();
 
-    FlutterLogSingleton.instance.init(settings: settings);
+    FlutterLogSingleton().init(settings: settings);
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_awesome_logger/flutter_awesome_logger.dart';
 import 'package:flutter_awesome_logger/src/logic/qa_screen_change_notifier.dart';
 import 'package:flutter_awesome_logger/src/singletones/global_dependencies.dart';
+import 'package:flutter_awesome_logger/src/singletones/proxy_stream_singleton.dart';
 import 'package:flutter_awesome_logger/src/widgets/feature_tile.dart';
 import 'package:flutter_awesome_logger/src/widgets/http_log_page/http_log_page.dart';
 import 'package:flutter_awesome_logger/src/widgets/log_page/log_page.dart';
@@ -24,7 +25,7 @@ class _QaBottomSheetState extends State<QaBottomSheet> {
   void initState() {
     changeNotifier = QaScreenChangeNotifier(
       GlobalDependencies().deviceInfoSingleton,
-      GlobalDependencies().proxyChangedStream.stream,
+      ProxyStreamSingleton().proxyStream.stream,
       GlobalDependencies().preferencesService,
     )..initialized();
     super.initState();

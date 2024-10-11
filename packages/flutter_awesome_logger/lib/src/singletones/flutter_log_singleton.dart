@@ -9,8 +9,9 @@ class FlutterLogSingleton {
 
   static final FlutterLogSingleton _instance = FlutterLogSingleton._internal();
 
-  static FlutterLogSingleton get instance => _instance;
-
+  factory FlutterLogSingleton() {
+    return _instance;
+  }
   List<LogEntry> logs = [];
   List<HttpLogEntry> httpLogs = [];
 
@@ -157,7 +158,7 @@ log(
   String? tag,
   String? stackTrace,
 }) {
-  FlutterLogSingleton.instance.addLog(
+  FlutterLogSingleton().addLog(
     info,
     logType: logType,
     tag: tag ?? '',

@@ -9,7 +9,7 @@ int logRequest(
   final dt = DateTime.now();
 
   final uri = Uri.parse(options.path);
-  return FlutterLogSingleton.instance.logHttpRequest(
+  return FlutterLogSingleton().logHttpRequest(
     method: options.method,
     baseUrl: uri.origin,
     path: uri.path,
@@ -25,7 +25,7 @@ void updateRequest(
   int timestamp,
   String? error,
 ) {
-  FlutterLogSingleton.instance.updateHttpLog(
+  FlutterLogSingleton().updateHttpLog(
     status: response.statusCode ?? HttpStatusCodeConstants.other,
     response: jsonEncode(response.data),
     error: error,

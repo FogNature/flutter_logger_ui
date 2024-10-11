@@ -5,32 +5,35 @@ import 'package:flutter_awesome_logger/flutter_awesome_logger.dart';
 import 'package:flutter_awesome_logger_dio/src/dio_logger_interceptor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DioClientWrapper {
+class DioClientWrapperSingleton {
   Dio? _dio;
-  final Stream<String> proxyUpdateStream;
-  final FlutterLogSingleton loggerSingleton;
+  late FlutterLogSingleton _loggerSingleton;
   late SharedPreferences _sharedPreferences;
   Dio? _initialDio;
 
-  DioClientWrapper(
-    this.proxyUpdateStream,
-    this.loggerSingleton,
-  ) {
-    proxyUpdateStream.listen(
+  factory DioClientWrapperSingleton() {
+    return _instance;
+  }
+
+  static final DioClientWrapperSingleton _instance =
+      DioClientWrapperSingleton._internal();
+
+  DioClientWrapperSingleton._internal();
+
+  init(Dio? dio) async {
+    _sharedPreferences = await SharedPreferences.getInstance();
+    _loggerSingleton = FlutterLogSingleton();
+    ProxyStreamSingleton().proxyStream.stream.listen(
       (event) {
         _recreateDio();
       },
     );
-  }
-
-  init(Dio? dio) async {
-    _sharedPreferences = await SharedPreferences.getInstance();
     final proxy = _sharedPreferences.getString(proxyName);
 
     _initialDio = dio ?? Dio();
     _dio = _initialDio;
     if ((proxy?.isNotEmpty ?? false) &&
-        loggerSingleton.loggerSettings.enabled) {
+        _loggerSingleton.loggerSettings.enabled) {
       (_dio?.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
         final client = HttpClient();
         client.findProxy = (_) => "PROXY $proxy;";
@@ -39,7 +42,7 @@ class DioClientWrapper {
       };
     }
     _dio!.interceptors.add(
-      DioLoggerInterceptor(loggerSingleton),
+      DioLoggerInterceptor(_loggerSingleton),
     );
   }
 
@@ -48,7 +51,7 @@ class DioClientWrapper {
 
     _dio = _initialDio;
     if ((proxy?.isNotEmpty ?? false) &&
-        loggerSingleton.loggerSettings.enabled) {
+        _loggerSingleton.loggerSettings.enabled) {
       (_dio?.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
         final client = HttpClient();
         client.findProxy = (_) => "PROXY $proxy;";
@@ -57,7 +60,7 @@ class DioClientWrapper {
       };
     }
     _dio!.interceptors.add(
-      DioLoggerInterceptor(loggerSingleton),
+      DioLoggerInterceptor(_loggerSingleton),
     );
   }
 
