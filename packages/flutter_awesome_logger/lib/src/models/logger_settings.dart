@@ -1,52 +1,47 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 
 class LoggerSettings {
   /// When this value is provided logger can work not only when kDebugMode is true.
   /// This is required to use this service on iOS, as TestFlight version is not
   /// on debug mode.
-  final bool customWorkingCondition;
+  final bool enabled;
   final VoidCallback? onLog;
   final VoidCallback? onHttpLog;
-
-  /// Http client with provided settings that will be used instead of default one.
-  final HttpClient? httpClient;
+  final VoidCallback? onHttpResponse;
 
   LoggerSettings({
-    this.customWorkingCondition = false,
+    this.enabled = false,
     this.onLog,
     this.onHttpLog,
-    this.httpClient,
+    this.onHttpResponse,
   });
 
   LoggerSettings copyWith({
-    bool? customWorkingCondition,
+    bool? enabled,
     VoidCallback? onLog,
     VoidCallback? onHttpLog,
-    HttpClient? httpClient,
+    VoidCallback? onHttpResponse,
   }) =>
       LoggerSettings(
-        customWorkingCondition:
-            customWorkingCondition ?? this.customWorkingCondition,
+        enabled: enabled ?? this.enabled,
         onLog: onLog ?? this.onLog,
         onHttpLog: onHttpLog ?? this.onHttpLog,
-        httpClient: httpClient ?? this.httpClient,
+        onHttpResponse: onHttpResponse ?? this.onHttpResponse,
       );
 
   @override
   bool operator ==(Object other) =>
       other is LoggerSettings &&
-      customWorkingCondition == other.customWorkingCondition &&
+      enabled == other.enabled &&
       onLog == other.onLog &&
       onHttpLog == other.onHttpLog &&
-      httpClient == other.httpClient;
+      onHttpResponse == other.onHttpResponse;
 
   @override
   int get hashCode => Object.hash(
-        customWorkingCondition,
+        enabled,
         onLog,
         onHttpLog,
-        httpClient,
+        onHttpResponse,
       );
 }

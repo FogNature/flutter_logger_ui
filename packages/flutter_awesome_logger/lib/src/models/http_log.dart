@@ -1,98 +1,91 @@
-import 'package:flutter_awesome_logger/src/services/database/database.dart';
+import 'package:flutter_awesome_logger/flutter_awesome_logger.dart';
 
 class HttpLogEntry {
-  final int id;
   final String method;
   final String path;
-  final int? status;
+  final String baseUrl;
+  final DateTime createdAt;
   final String? body;
+  final int status;
   final String headers;
   final String query;
   final String? response;
   final String? error;
-  final DateTime createdAt;
+  final DateTime? responseTime;
 
   HttpLogEntry({
-    required this.id,
     required this.method,
     required this.path,
-    required this.status,
-    required this.body,
-    required this.headers,
-    required this.query,
-    required this.response,
-    required this.error,
+    required this.baseUrl,
     required this.createdAt,
+    this.body,
+    this.status = HttpStatusCodeConstants.pending,
+    this.headers = '{}',
+    this.query = '{}',
+    this.response,
+    this.error,
+    this.responseTime,
   });
-
-  factory HttpLogEntry.fromTableData(HttpLogData data) => HttpLogEntry(
-        id: data.id,
-        method: data.method,
-        path: data.path,
-        status: data.status,
-        body: data.body,
-        headers: data.headers,
-        query: data.query,
-        response: data.response,
-        error: data.error,
-        createdAt: data.createdAt,
-      );
 
   @override
   String toString() {
-    return 'HttpLogEntry(id: $id, method: $method, path: $path, status: $status, body: $body, headers: $headers, query: $query, response: $response, error: $error, createdAt: $createdAt, )';
+    return 'HttpLogEntry(method: $method, path: $path, baseUrl: $baseUrl, createdAt: $createdAt, body: $body, status: $status, headers: $headers, query: $query, response: $response, error: $error,responseTime: $responseTime)';
   }
 
   @override
   bool operator ==(Object other) =>
       other is HttpLogEntry &&
-      id == other.id &&
       method == other.method &&
       path == other.path &&
-      status == other.status &&
+      baseUrl == other.baseUrl &&
+      createdAt == other.createdAt &&
       body == other.body &&
+      status == other.status &&
       headers == other.headers &&
       query == other.query &&
       response == other.response &&
       error == other.error &&
-      createdAt == other.createdAt;
+      responseTime == other.responseTime;
 
   HttpLogEntry copyWith({
-    int? id,
     String? method,
     String? path,
-    int? status,
+    String? baseUrl,
+    DateTime? createdAt,
     String? body,
+    int? status,
     String? headers,
     String? query,
     String? response,
     String? error,
-    DateTime? createdAt,
+    DateTime? responseTime,
   }) =>
       HttpLogEntry(
-        id: id ?? this.id,
         method: method ?? this.method,
         path: path ?? this.path,
-        status: status ?? this.status,
+        baseUrl: baseUrl ?? this.baseUrl,
+        createdAt: createdAt ?? this.createdAt,
         body: body ?? this.body,
+        status: status ?? this.status,
         headers: headers ?? this.headers,
         query: query ?? this.query,
         response: response ?? this.response,
         error: error ?? this.error,
-        createdAt: createdAt ?? this.createdAt,
+        responseTime: responseTime ?? this.responseTime,
       );
 
   @override
   int get hashCode => Object.hash(
-        id,
         method,
         path,
-        status,
+        baseUrl,
+        createdAt,
         body,
+        status,
         headers,
         query,
         response,
         error,
-        createdAt,
+        responseTime,
       );
 }

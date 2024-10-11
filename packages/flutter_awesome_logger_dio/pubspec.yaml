@@ -1,7 +1,6 @@
 name: flutter_awesome_logger_dio
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
@@ -11,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   dio: ^5.6.0
+  shared_preferences: ^2.3.2
   flutter_awesome_logger:
     path: ../flutter_awesome_logger
 

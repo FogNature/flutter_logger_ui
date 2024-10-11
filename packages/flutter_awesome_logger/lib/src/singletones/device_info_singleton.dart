@@ -15,9 +15,7 @@ class DeviceInfoSingleton {
 
   DeviceInfoSingleton._internal();
 
-  Future<void> init({
-    required bool initNetworkInfo,
-  }) async {
+  Future<void> init() async {
     _deviceInfoPlugin = DeviceInfoPlugin();
     _packageInfo = await PackageInfo.fromPlatform();
     if (Platform.isIOS) {
@@ -28,6 +26,7 @@ class DeviceInfoSingleton {
       _systemVersion = iOSInfo.systemVersion;
       _version = _packageInfo.version;
       _buildNumber = _packageInfo.buildNumber;
+      _appName = _packageInfo.appName;
     }
     if (Platform.isAndroid) {
       final androidInfo = await _deviceInfoPlugin.iosInfo;
@@ -37,6 +36,7 @@ class DeviceInfoSingleton {
       _systemVersion = androidInfo.systemVersion;
       _version = _packageInfo.version;
       _buildNumber = _packageInfo.buildNumber;
+      _appName = _packageInfo.appName;
     }
   }
 
@@ -46,6 +46,7 @@ class DeviceInfoSingleton {
   String? _systemVersion;
   String? _version;
   String? _buildNumber;
+  String? _appName;
 
   String get platform {
     if (_platform != null) {
@@ -95,6 +96,15 @@ class DeviceInfoSingleton {
   String get buildNumber {
     if (_buildNumber != null) {
       return _buildNumber!;
+    }
+    throw Exception(
+      'This field has not been initialized. Be sure to call DeviceInfoSingleton.init() before accessing this field',
+    );
+  }
+
+  String get appName {
+    if (_appName != null) {
+      return _appName!;
     }
     throw Exception(
       'This field has not been initialized. Be sure to call DeviceInfoSingleton.init() before accessing this field',

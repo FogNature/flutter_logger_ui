@@ -1,71 +1,60 @@
-import 'package:flutter_awesome_logger/src/services/database/database.dart';
-
-enum LogLever {
-  trace,
-  debug,
-  info,
-  warning,
+enum LogType {
+  none,
+  flutter,
+  custom,
   error,
 }
 
 class LogEntry {
-  final int id;
   final String info;
-  final String tag;
-  final LogLever logLever;
+  final String? tag;
+  final LogType logType;
   final DateTime createdAt;
+  final String? stackTrace;
 
   LogEntry({
-    required this.id,
     required this.info,
-    required this.logLever,
     required this.createdAt,
-    required this.tag,
+    this.tag,
+    this.logType = LogType.none,
+    this.stackTrace,
   });
-
-  factory LogEntry.fromTableData(LogData data) => LogEntry(
-        id: data.id,
-        info: data.info,
-        logLever: LogLever.values[data.logLever],
-        createdAt: data.createdAt,
-        tag: data.tag,
-      );
 
   @override
   String toString() {
-    return 'LogEntry(id: $id, logLever: $logLever, createdAt: $createdAt, tag: $tag, info: $info,)';
+    return 'LogEntry(info: $info, tag: $tag, logType: $logType, createdAt: $createdAt, stackTrace: $stackTrace,)';
   }
 
   @override
   bool operator ==(Object other) =>
       other is LogEntry &&
-      id == other.id &&
-      logLever == other.logLever &&
-      createdAt == other.createdAt &&
+      info == other.info &&
       tag == other.tag &&
-      info == other.info;
+      logType == other.logType &&
+      createdAt == other.createdAt &&
+      stackTrace == other.stackTrace;
 
   LogEntry copyWith({
-    int? id,
     String? info,
-    LogLever? logLever,
-    DateTime? createdAt,
     String? tag,
+    LogType? logType,
+    DateTime? createdAt,
+    String? stackTrace,
   }) =>
       LogEntry(
-        id: id ?? this.id,
         info: info ?? this.info,
-        logLever: logLever ?? this.logLever,
-        createdAt: createdAt ?? this.createdAt,
         tag: tag ?? this.tag,
+        logType: logType ?? this.logType,
+        createdAt: createdAt ?? this.createdAt,
+        stackTrace: stackTrace ?? this.stackTrace,
       );
 
   @override
   int get hashCode => Object.hash(
-        id,
-        logLever,
-        createdAt,
-        tag,
         info,
+        tag,
+        logType,
+        createdAt,
+        stackTrace,
       );
 }
