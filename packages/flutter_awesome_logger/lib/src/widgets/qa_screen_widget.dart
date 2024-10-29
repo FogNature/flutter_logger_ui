@@ -12,18 +12,18 @@ class QaScreenWidget extends StatelessWidget {
     super.key,
     required this.enabled,
     required this.child,
-    required this.loggerLocalizations,
-    required this.onLog,
-    required this.onHttpLog,
-    required this.onHttpResponse,
+    this.loggerLocalizations,
+    this.onLog,
+    this.onHttpLog,
+    this.onHttpResponse,
   });
 
   final bool enabled;
-  final Map<LoggerLocalizations, String>? loggerLocalizations;
   final Widget child;
-  final VoidCallback onLog;
-  final VoidCallback onHttpLog;
-  final VoidCallback onHttpResponse;
+  final Map<LoggerLocalizations, String>? loggerLocalizations;
+  final VoidCallback? onLog;
+  final VoidCallback? onHttpLog;
+  final VoidCallback? onHttpResponse;
 
   @override
   Widget build(BuildContext context) {

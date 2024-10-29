@@ -1,0 +1,28 @@
+name: example
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  http: ^1.2.2
+  dio: ^5.7.0
+  flutter_awesome_logger:
+    path: ../../flutter_awesome_logger
+  flutter_awesome_logger_dio:
+    path: ../../flutter_awesome_logger_dio
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+flutter:
+
+  uses-material-design: true

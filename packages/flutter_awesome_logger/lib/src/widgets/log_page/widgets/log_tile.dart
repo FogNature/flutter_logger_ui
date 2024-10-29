@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_awesome_logger/flutter_awesome_logger.dart';
 import 'package:flutter_awesome_logger/src/models/log.dart';
+import 'package:flutter_awesome_logger/src/models/log_type.dart';
 import 'package:flutter_awesome_logger/src/utils/format_log_time.dart';
 import 'package:flutter_awesome_logger/src/widgets/logger_localizations_widget.dart';
 

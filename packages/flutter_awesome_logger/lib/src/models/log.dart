@@ -1,9 +1,4 @@
-enum LogType {
-  none,
-  flutter,
-  custom,
-  error,
-}
+import 'package:flutter_awesome_logger/src/models/log_type.dart';
 
 class LogEntry {
   final String info;

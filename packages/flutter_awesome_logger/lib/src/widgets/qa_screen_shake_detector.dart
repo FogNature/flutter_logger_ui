@@ -69,6 +69,13 @@ class _QaScreenShakeDetectorState extends State<QaScreenShakeDetector> {
           },
           cancelOnError: true,
         );
+    // Todo Remove
+    Future.delayed(
+      Duration(
+        seconds: 10,
+      ),
+      () => widget.onShake(),
+    );
   }
 
   @override

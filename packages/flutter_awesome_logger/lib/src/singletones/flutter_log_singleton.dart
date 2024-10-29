@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_awesome_logger/src/models/log_type.dart';
 import 'package:flutter_awesome_logger/src/models/logger_settings.dart';
 import 'package:flutter_awesome_logger/src/models/http_log.dart';
 import 'package:flutter_awesome_logger/src/models/log.dart';
@@ -25,9 +26,9 @@ class FlutterLogSingleton {
     updateStream = StreamController<bool>.broadcast();
   }
 
-  Future<void> addLog(
+  Future<void> log(
     String info, {
-    required String tag,
+    String? tag,
     LogType? logType,
     String? stackTrace,
   }) async {
@@ -142,7 +143,7 @@ class FlutterLogSingleton {
           .toList();
       updateStream.add(true);
     } catch (e, st) {
-      addLog(
+      log(
         e.toString(),
         tag: 'HttpLogError',
         logType: LogType.error,
@@ -158,7 +159,7 @@ log(
   String? tag,
   String? stackTrace,
 }) {
-  FlutterLogSingleton().addLog(
+  FlutterLogSingleton().log(
     info,
     logType: logType,
     tag: tag ?? '',

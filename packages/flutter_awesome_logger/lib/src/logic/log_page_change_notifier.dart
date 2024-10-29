@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_awesome_logger/src/models/log.dart';
+import 'package:flutter_awesome_logger/src/models/log_type.dart';
 import 'package:flutter_awesome_logger/src/singletones/flutter_log_singleton.dart';
 
 class LogPageChangeNotifier with ChangeNotifier {

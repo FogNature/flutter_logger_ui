@@ -1,0 +1,6 @@
+# melos_managed_dependency_overrides: flutter_awesome_logger,flutter_awesome_logger_dio
+dependency_overrides:
+  flutter_awesome_logger:
+    path: ..
+  flutter_awesome_logger_dio:
+    path: ../../flutter_awesome_logger_dio
