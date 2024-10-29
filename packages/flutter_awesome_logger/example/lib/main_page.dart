@@ -1,18 +1,11 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_awesome_logger/flutter_awesome_logger.dart';
+import 'package:flutter_awesome_logger_dio/flutter_awesome_logger_dio.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({
     super.key,
-    required this.client,
-    required this.dio,
   });
-
-  final HttpClient client;
-  final Dio dio;
 
   @override
   Widget build(BuildContext context) {
@@ -23,36 +16,45 @@ class MainPage extends StatelessWidget {
         ),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          ElevatedButton(
-            onPressed: () {},
-            child: Text('Send http request'),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text('Send http request'),
+            ),
           ),
-          ElevatedButton(
-            onPressed: () {},
-            child: Text('Send http dio http request'),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                DioClientWrapperSingleton().dio.get(
+                      'https://jsonplaceholder.typicode.com/posts',
+                    );
+              },
+              child: Text('Send http dio http request'),
+            ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              throw Exception(
-                'My exception',
-              );
-            },
-            child: Text('Throw error'),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                throw Exception(
+                  'My exception',
+                );
+              },
+              child: Text('Throw error'),
+            ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              FlutterLogSingleton().log(
-                'My custom log',
-                logType: LogType.custom,
-              );
-            },
-            child: Text('Add custom log'),
-          ),
-          // Todo implement manual bottom sheet opening in app.
-          ElevatedButton(
-            onPressed: () {},
-            child: Text('Add custom log'),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                FlutterLogSingleton().log(
+                  'My custom log',
+                  logType: LogType.custom,
+                );
+              },
+              child: Text('Add custom log'),
+            ),
           ),
         ],
       ),

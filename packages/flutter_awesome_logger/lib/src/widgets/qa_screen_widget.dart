@@ -7,7 +7,7 @@ import 'package:flutter_awesome_logger/src/widgets/logger_localizations_widget.d
 import 'package:flutter_awesome_logger/src/widgets/qa_bottom_sheet.dart';
 import 'package:flutter_awesome_logger/src/widgets/qa_screen_shake_detector.dart';
 
-class QaScreenWidget extends StatelessWidget {
+class QaScreenWidget extends StatefulWidget {
   const QaScreenWidget({
     super.key,
     required this.enabled,
@@ -26,62 +26,74 @@ class QaScreenWidget extends StatelessWidget {
   final VoidCallback? onHttpResponse;
 
   @override
-  Widget build(BuildContext context) {
-    if (kDebugMode || enabled) {
-      return FutureBuilder(
-        future: GlobalDependencies().init(
+  State<QaScreenWidget> createState() => _QaScreenWidgetState();
+}
+
+class _QaScreenWidgetState extends State<QaScreenWidget> {
+  bool initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    GlobalDependencies()
+        .init(
           settings: LoggerSettings(
-            enabled: enabled,
-            onLog: onLog,
-            onHttpLog: onHttpLog,
-            onHttpResponse: onHttpResponse,
+            enabled: widget.enabled,
+            onLog: widget.onLog,
+            onHttpLog: widget.onHttpLog,
+            onHttpResponse: widget.onHttpResponse,
           ),
-        ),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Localizations(
-              locale: const Locale('ru'),
-              delegates: const [
-                DefaultMaterialLocalizations.delegate,
-                DefaultCupertinoLocalizations.delegate,
-                DefaultWidgetsLocalizations.delegate,
-              ],
-              child: LoggerLocalizationsWidget(
-                loggerLocalizations: loggerLocalizations,
-                child: Navigator(
-                  onPopPage: (page, _) {
-                    return false;
-                  },
-                  pages: [
-                    MaterialPage(
-                      child: Builder(
-                        builder: (context) {
-                          return QaScreenShakeDetector(
-                            onShake: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (context) => const QaBottomSheet(),
-                              );
-                            },
-                            child: PopScope(
-                              canPop: false,
-                              onPopInvokedWithResult: (_, result) => false,
-                              child: child,
-                            ),
-                          );
-                        },
+        )
+        .then(
+          (_) => setState(() {
+            initialized = true;
+          }),
+        );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if ((kDebugMode || widget.enabled) && initialized) {
+      return Localizations(
+        locale: const Locale('en'),
+        delegates: const [
+          DefaultMaterialLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+          DefaultWidgetsLocalizations.delegate,
+        ],
+        child: LoggerLocalizationsWidget(
+          loggerLocalizations: widget.loggerLocalizations,
+          child: Navigator(
+            onPopPage: (page, _) {
+              return false;
+            },
+            pages: [
+              MaterialPage(
+                child: Builder(
+                  builder: (context) {
+                    return QaScreenShakeDetector(
+                      onShake: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => const QaBottomSheet(),
+                        );
+                      },
+                      child: PopScope(
+                        canPop: false,
+                        onPopInvokedWithResult: (_, result) => false,
+                        child: widget.child,
                       ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ),
-            );
-          }
-          return child;
-        },
+            ],
+          ),
+        ),
       );
     }
 
-    return child;
+    return widget.child;
   }
 }

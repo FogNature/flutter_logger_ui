@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:device_info_plus/device_info_plus.dart';
+//import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class DeviceInfoSingleton {
-  late DeviceInfoPlugin _deviceInfoPlugin;
+  //late DeviceInfoPlugin _deviceInfoPlugin;
   late PackageInfo _packageInfo;
 
   factory DeviceInfoSingleton() {
@@ -16,24 +16,24 @@ class DeviceInfoSingleton {
   DeviceInfoSingleton._internal();
 
   Future<void> init() async {
-    _deviceInfoPlugin = DeviceInfoPlugin();
+    //_deviceInfoPlugin = DeviceInfoPlugin();
     _packageInfo = await PackageInfo.fromPlatform();
     if (Platform.isIOS) {
-      final iOSInfo = await _deviceInfoPlugin.iosInfo;
+      //final iOSInfo = await _deviceInfoPlugin.iosInfo;
       _platform = 'iOS';
-      _model = iOSInfo.utsname.machine;
-      _systemName = iOSInfo.systemName;
-      _systemVersion = iOSInfo.systemVersion;
+      //_model = iOSInfo.utsname.machine;
+      //_systemName = iOSInfo.systemName;
+      //_systemVersion = iOSInfo.systemVersion;
       _version = _packageInfo.version;
       _buildNumber = _packageInfo.buildNumber;
       _appName = _packageInfo.appName;
     }
     if (Platform.isAndroid) {
-      final androidInfo = await _deviceInfoPlugin.iosInfo;
+      //final androidInfo = await _deviceInfoPlugin.iosInfo;
       _platform = 'Android';
-      _model = androidInfo.model;
-      _systemName = androidInfo.systemName;
-      _systemVersion = androidInfo.systemVersion;
+      //_model = androidInfo.model;
+      //_systemName = androidInfo.systemName;
+      //_systemVersion = androidInfo.systemVersion;
       _version = _packageInfo.version;
       _buildNumber = _packageInfo.buildNumber;
       _appName = _packageInfo.appName;

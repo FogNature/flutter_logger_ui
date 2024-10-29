@@ -69,13 +69,6 @@ class _QaScreenShakeDetectorState extends State<QaScreenShakeDetector> {
           },
           cancelOnError: true,
         );
-    // Todo Remove
-    Future.delayed(
-      Duration(
-        seconds: 10,
-      ),
-      () => widget.onShake(),
-    );
   }
 
   @override
@@ -85,7 +78,7 @@ class _QaScreenShakeDetectorState extends State<QaScreenShakeDetector> {
 
   @override
   Future<void> dispose() async {
-    await _listener.cancel();
+    _listener.cancel();
     super.dispose();
   }
 }

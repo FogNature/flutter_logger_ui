@@ -39,6 +39,7 @@ class FlutterLogSingleton {
         '=================${(logType ?? LogType.none).name.toUpperCase()}=================');
     print('Tag: ${tag}');
     print(info);
+    print(stackTrace);
     print(
       '=================${'=' * (logType ?? LogType.none).name.length}=================',
     );

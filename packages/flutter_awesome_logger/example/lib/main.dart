@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:example/main_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_awesome_logger/flutter_awesome_logger.dart';
@@ -11,6 +12,7 @@ void main() {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
+    await _initClients();
     FlutterError.onError = (FlutterErrorDetails details) {
       FlutterLogSingleton().log(
         details.exception.toString(),
@@ -38,47 +40,34 @@ void main() {
   });
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  late HttpClient httpClient;
-  late Dio dio;
-
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _initClients(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return QaScreenWidget(
-            enabled: true,
-            child: MaterialApp(
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-                useMaterial3: true,
-              ),
-              home: MainPage(
-                client: httpClient,
-                dio: dio,
-              ),
-            ),
-          );
-        }
-        return const SizedBox();
-      },
+    return QaScreenWidget(
+      enabled: true,
+      child: MaterialApp(
+        locale: const Locale('en'),
+        localizationsDelegates: const [
+          DefaultMaterialLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+          DefaultWidgetsLocalizations.delegate,
+        ],
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+          useMaterial3: true,
+        ),
+        home: MainPage(),
+      ),
     );
   }
+}
 
-  Future<void> _initClients() async {
-    await DioClientWrapperSingleton().init(Dio());
-    await HttpWrapperSingleton().init(HttpClient());
+Future<void> _initClients() async {
+  await DioClientWrapperSingleton().init(Dio());
+  await HttpWrapperSingleton().init(HttpClient());
 
-    dio = DioClientWrapperSingleton().dio;
-    httpClient = HttpWrapperSingleton().httpClient;
-  }
+  DioClientWrapperSingleton().dio;
+  HttpWrapperSingleton().httpClient;
 }

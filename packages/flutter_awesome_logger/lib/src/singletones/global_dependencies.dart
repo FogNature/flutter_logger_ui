@@ -7,7 +7,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class GlobalDependencies {
   late SharedPreferencesService preferencesService;
-  late DeviceInfoSingleton deviceInfoSingleton;
+
+  factory GlobalDependencies() {
+    return _instance;
+  }
+
+  static final GlobalDependencies _instance = GlobalDependencies._internal();
+
+  GlobalDependencies._internal();
 
   Future<void> init({
     required LoggerSettings settings,
